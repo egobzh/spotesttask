@@ -6,6 +6,8 @@ class Parse:
         self.packets = []
 
     def get_data(self):
+        """Receives data about binary packages from the site. Urls in variables
+        sisyphus and p10 can be changed if you need."""
         sisyphus = requests.get(url='https://rdb.altlinux.org/api/export/branch_binary_packages/sisyphus')
         p10 = requests.get(url='https://rdb.altlinux.org/api/export/branch_binary_packages/p10')
         result = {'archs': []}
@@ -38,6 +40,7 @@ class Parse:
         self.packets = result
 
     def get_p10(self):
+        """Get binary packages which in p10, but not in sisyphus."""
         result = {'archs':[]}
         for arch in self.packets['archs']:
             packets = []
@@ -50,6 +53,7 @@ class Parse:
         return result
 
     def get_sisyphus(self):
+        """Get binary packages which in sisyphus, but not in p10."""
         result = {'archs':[]}
         for arch in self.packets['archs']:
             packets = []
@@ -62,6 +66,7 @@ class Parse:
         return result
 
     def sisyphus_higher(self):
+        """Get binary packages which version-release in sisyphus higher than p10."""
         result = {'archs': []}
         for arch in self.packets['archs']:
             packets = []
@@ -73,4 +78,3 @@ class Parse:
                 result['archs'].append(arch)
                 result[arch] = packets
         return result
-
