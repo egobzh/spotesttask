@@ -1,16 +1,49 @@
-# This is a sample Python script.
+from packetsparse import Parse
+import sys
+import json
+import time
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+def json_to_file(name,data):
+    with open(f'{name}.json', 'w') as outfile:
+        json.dump(data, outfile)
 
+def main():
+    parser = Parse()
+    try:
+        parser.get_data()
+    except:
+        print('Cant get data:( Try again later or check urls for validity in module!!')
+        return
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+    if len(sys.argv) == 1:
+        timestring = time.strftime("%Y%m%d-%H%M%S")
+        result = parser.get_sisyphus()
+        json_to_file('sisyphus_' + timestring, result)
+        result = parser.get_p10()
+        json_to_file('p10_' + timestring, result)
+        result = parser.sisyphus_higher()
+        json_to_file('sisyphus_higher_' + timestring, result)
+    else:
+        if sys.argv[1] == '--s':
+            result = parser.get_sisyphus()
+            timestring = time.strftime("%Y%m%d-%H%M%S")
+            json_to_file('sisyphus_'+timestring, result)
+        elif sys.argv[1] == '--p':
+            result = parser.get_p10()
+            timestring = time.strftime("%Y%m%d-%H%M%S")
+            json_to_file('p10_'+timestring, result)
+        elif sys.argv[1] == '--sh':
+            result = parser.sisyphus_higher()
+            timestring = time.strftime("%Y%m%d-%H%M%S")
+            json_to_file('sisyphus_higher_'+timestring, result)
+        else:
+            timestring = time.strftime("%Y%m%d-%H%M%S")
+            result = parser.get_sisyphus()
+            json_to_file('sisyphus_' + timestring, result)
+            result = parser.get_p10()
+            json_to_file('p10_' + timestring, result)
+            result = parser.sisyphus_higher()
+            json_to_file('sisyphus_higher_' + timestring, result)
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
