@@ -31,3 +31,6 @@ python main.py --qq
 etc...
 ```
 you will recieve three files at once.
+## Structure of json response
+The 'archs' key in json is the list that includes available architectures. Further, by keys from 'archs' list you can recieve binary packages for this architectures.
+![alt text](https://disk.yandex.ru/i/twQynjGiuxFVFA)
